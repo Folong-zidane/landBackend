@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+    container_name: folongzidane_app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+    ports:
+      - "8080:80"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=base64:rM1EyFRp2v9/CUSpNeKxwBw+CQHyMRjpHeqJeOk4nAM=
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=folong
+      - DB_USERNAME=folongzidane
+      - DB_PASSWORD=folongzidane
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: folongzidane_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: folongzidane
+      MYSQL_DATABASE: folong
+      MYSQL_USER: folongzidane
+      MYSQL_PASSWORD: folongzidane
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  dbdata:
